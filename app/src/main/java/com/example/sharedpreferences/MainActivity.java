@@ -10,6 +10,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -39,6 +46,25 @@ public class MainActivity extends AppCompatActivity {
         name.setText(n);
         age.setText(String.valueOf(a));
         enrolled.setChecked(e);
+
+        //create gson object
+        Gson gson = new Gson();
+
+        //create new employee object
+        List<FamilyMember> family = new ArrayList<FamilyMember>();
+        family.add(new FamilyMember("cat", 8));
+        Employee liz = new Employee("Liz", 17, "liz@gmail.com", new Address("US", "Dallas"), family);
+
+        //create json version of object as a string
+        String lizString = gson.toJson(liz);
+        //back to employee class
+        Employee employee2 = gson.fromJson(lizString, Employee.class);
+
+        //creating json of family list
+        String json2 = gson.toJson(family);
+
+        Type familyType = new TypeToken<ArrayList<FamilyMember>>(){}.getType();
+        ArrayList<FamilyMember> family2 = gson.fromJson(json2, familyType);
     }
 
 
